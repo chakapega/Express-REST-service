@@ -1,11 +1,13 @@
-let users = [];
+let users = [
+  {
+    id: '0e869bff-7d2d-4a5d-ab03-a48a149c9b52',
+    name: 'TEST_USER',
+    login: 'test_user'
+  }
+];
 
 const getAll = async () => {
   return users;
-};
-
-const create = async user => {
-  users.push(user);
 };
 
 const getById = async id => {
@@ -14,24 +16,24 @@ const getById = async id => {
   });
 };
 
-const update = async (id, updatedUser) => {
+const create = async user => {
+  users.push(user);
+};
+
+const update = async (id, { name, login, password }) => {
   users.forEach(user => {
     if (user.id === id) {
-      const { name, login, password } = updatedUser;
-
       user.name = name;
       user.login = login;
       user.password = password;
     }
   });
-
-  return await getById(id);
 };
 
-const deleteUser = async id => {
+const remove = async id => {
   users = users.filter(user => {
     if (user.id !== id) return user;
   });
 };
 
-module.exports = { create, getAll, getById, update, deleteUser };
+module.exports = { getAll, getById, create, update, remove };

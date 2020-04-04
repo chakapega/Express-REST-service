@@ -1,16 +1,16 @@
 const router = require('express').Router();
 const User = require('./user.model');
-const usersService = require('./user.service');
+const userService = require('./user.service');
 
 router.route('/').get(async (req, res) => {
-  const users = await usersService.getAll();
+  const users = await userService.getAll();
 
   res.json(users.map(User.toResponse));
 });
 
 router.route('/:id').get(async (req, res) => {
   const { id } = req.params;
-  const user = await usersService.getById(id);
+  const user = await userService.getById(id);
 
   if (user) {
     res.json(User.toResponse(user));
@@ -23,9 +23,7 @@ router.route('/').post(async (req, res) => {
   const { name, login, password } = req.body;
 
   if (name && login && password) {
-    const user = new User({ name, login, password });
-
-    await usersService.create(user);
+    const user = await userService.create({ name, login, password });
 
     res.json(User.toResponse(user));
   } else {
@@ -37,8 +35,7 @@ router.route('/:id').put(async (req, res) => {
   const { id } = req.params;
   const { name, login, password } = req.body;
 
-  const user = await usersService.update(id, { name, login, password });
-  console.log(user);
+  const user = await userService.update(id, { name, login, password });
 
   if (user) {
     res.json(User.toResponse(user));
@@ -50,9 +47,13 @@ router.route('/:id').put(async (req, res) => {
 router.route('/:id').delete(async (req, res) => {
   const { id } = req.params;
 
-  await usersService.deleteUser(id);
+  const isRemoved = await userService.remove(id);
 
-  res.send('The user has been deleted');
+  if (isRemoved) {
+    res.send('The user has been deleted');
+  } else {
+    res.status(404).send('User not found');
+  }
 });
 
 module.exports = router;

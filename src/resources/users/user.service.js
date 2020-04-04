@@ -1,9 +1,35 @@
-const usersRepo = require('./user.memory.repository');
+const userMemoryRepository = require('./user.memory.repository');
+const User = require('./user.model');
 
-const getAll = () => usersRepo.getAll();
-const create = user => usersRepo.create(user);
-const getById = id => usersRepo.getById(id);
-const update = (id, updatedUser) => usersRepo.update(id, updatedUser);
-const deleteUser = id => usersRepo.deleteUser(id);
+const getAll = () => userMemoryRepository.getAll();
 
-module.exports = { create, getAll, getById, update, deleteUser };
+const getById = id => userMemoryRepository.getById(id);
+
+const create = async ({ name, login, password }) => {
+  const user = new User({ name, login, password });
+
+  await userMemoryRepository.create(user);
+
+  return user;
+};
+
+const update = async (id, { name, login, password }) => {
+  await userMemoryRepository.update(id, { name, login, password });
+
+  return await userMemoryRepository.getById(id);
+};
+
+const remove = async id => {
+  let isRemoved = false;
+  const user = await userMemoryRepository.getById(id);
+
+  if (user) {
+    await userMemoryRepository.remove(id);
+
+    isRemoved = true;
+  }
+
+  return isRemoved;
+};
+
+module.exports = { getAll, getById, create, update, remove };
