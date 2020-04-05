@@ -50,7 +50,7 @@ router.route('/:id').delete(async (req, res) => {
   const isRemoved = await userService.remove(id);
 
   if (isRemoved) {
-    res.send('The user has been deleted');
+    res.status(204).send('The user has been deleted');
   } else {
     res.status(404).send('User not found');
   }
