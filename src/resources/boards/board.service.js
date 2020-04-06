@@ -1,4 +1,5 @@
 const boardMemoryRepository = require('./board.memory.repository');
+const taskMemoryRepository = require('../tasks/task.memory.repository');
 const Board = require('./board.model');
 
 const getAll = () => boardMemoryRepository.getAll();
@@ -25,7 +26,7 @@ const remove = async id => {
 
   if (board) {
     await boardMemoryRepository.remove(id);
-
+    await taskMemoryRepository.removeByBoardId(id);
     isRemoved = true;
   }
 

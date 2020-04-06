@@ -83,38 +83,39 @@ describe('Boards suite', () => {
   describe('PUT', () => {
     it('should update board successfully', async () => {
       // Setup
-      let boardToUpdate;
+      let boardId;
 
       await request
         .post(routes.boards.create)
         .set('Accept', 'application/json')
         .send(TEST_BOARD_DATA)
         .then(res => {
-          boardToUpdate = res.body;
+          boardId = res.body.id;
         });
 
       const updatedBoard = {
-        ...boardToUpdate,
-        title: 'Autotest updated board'
+        ...TEST_BOARD_DATA,
+        title: 'Autotest updated board',
+        id: boardId
       };
 
       // Test
       await request
-        .put(routes.boards.update(boardToUpdate.id))
+        .put(routes.boards.update(boardId))
         .set('Accept', 'application/json')
         .send(updatedBoard)
         .expect(200)
         .expect('Content-Type', /json/);
 
       await request
-        .get(routes.boards.getById(updatedBoard.id))
+        .get(routes.boards.getById(boardId))
         .set('Accept', 'application/json')
         .expect(200)
         .expect('Content-Type', /json/)
         .then(res => jestExpect(res.body).toMatchObject(updatedBoard));
 
       // Teardown
-      await request.delete(routes.boards.delete(updatedBoard.id));
+      await request.delete(routes.boards.delete(boardId));
     });
   });
 

@@ -1,4 +1,5 @@
 const userMemoryRepository = require('./user.memory.repository');
+const taskMemoryRepository = require('../tasks/task.memory.repository');
 const User = require('./user.model');
 
 const getAll = () => userMemoryRepository.getAll();
@@ -25,7 +26,7 @@ const remove = async id => {
 
   if (user) {
     await userMemoryRepository.remove(id);
-
+    await taskMemoryRepository.eraseUserIdAfterRemovingUser(id);
     isRemoved = true;
   }
 

@@ -1,10 +1,4 @@
-let users = [
-  {
-    id: '0e869bff-7d2d-4a5d-ab03-a48a149c9b52',
-    name: 'TEST_USER',
-    login: 'test_user'
-  }
-];
+let users = [];
 
 const getAll = async () => {
   return users;
