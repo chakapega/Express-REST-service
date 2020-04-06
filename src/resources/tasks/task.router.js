@@ -39,7 +39,7 @@ router.route('/:boardId/tasks/:taskId').get(async (req, res) => {
 router.route('/:boardId/tasks/:taskId').put(async (req, res) => {
   const { boardId, taskId } = req.params;
   const {
-    id: newId,
+    id: newTaskId,
     title,
     order,
     description,
@@ -49,7 +49,7 @@ router.route('/:boardId/tasks/:taskId').put(async (req, res) => {
   } = req.body;
 
   const task = await taskService.update(boardId, taskId, {
-    newId,
+    newTaskId,
     title,
     order,
     description,

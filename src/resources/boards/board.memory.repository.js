@@ -17,8 +17,8 @@ const create = async board => {
 const update = async (id, { title, columns }) => {
   boards.forEach(board => {
     if (board.id === id) {
-      board.title = title;
-      board.columns = columns;
+      board.title = title || board.title;
+      board.columns = columns || board.columns;
     }
   });
 };

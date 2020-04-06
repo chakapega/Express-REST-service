@@ -19,17 +19,17 @@ const getByBoardIdAndTaskId = (boardId, taskId) => {
 const update = async (
   boardId,
   taskId,
-  { newId, title, order, description, newUserId, newBoardId, newColumnId }
+  { newTaskId, title, order, description, newUserId, newBoardId, newColumnId }
 ) => {
   tasks.forEach(task => {
     if (task.boardId === boardId && task.id === taskId) {
-      task.id = newId;
-      task.title = title;
-      task.order = order;
-      task.description = description;
-      task.userId = newUserId;
-      task.boardId = newBoardId;
-      task.columnId = newColumnId;
+      task.id = newTaskId || task.id;
+      task.title = title || task.title;
+      task.order = order || task.order;
+      task.description = description || task.description;
+      task.userId = newUserId || task.userId;
+      task.boardId = newBoardId || task.boardId;
+      task.columnId = newColumnId || task.columnId;
     }
   });
 };

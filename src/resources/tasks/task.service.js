@@ -28,10 +28,10 @@ const getByBoardIdAndTaskId = (boardId, taskId) =>
 const update = async (
   boardId,
   taskId,
-  { newId, title, order, description, newUserId, newBoardId, newColumnId }
+  { newTaskId, title, order, description, newUserId, newBoardId, newColumnId }
 ) => {
   await taskMemoryRepository.update(boardId, taskId, {
-    newId,
+    newTaskId,
     title,
     order,
     description,
@@ -40,7 +40,7 @@ const update = async (
     newColumnId
   });
 
-  return await getByBoardIdAndTaskId(newBoardId, newId);
+  return await getByBoardIdAndTaskId(newBoardId, newTaskId);
 };
 
 const remove = async (boardId, taskId) => {
