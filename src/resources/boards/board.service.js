@@ -26,7 +26,7 @@ const remove = async id => {
 
   if (board) {
     await boardMemoryRepository.remove(id);
-    await taskMemoryRepository.removeByBoardId(id);
+    await taskMemoryRepository.removeAllByBoardId(id);
     isRemoved = true;
   }
 

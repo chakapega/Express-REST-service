@@ -9,7 +9,6 @@ router.route('/').get(async (req, res) => {
 
 router.route('/:id').get(async (req, res) => {
   const { id } = req.params;
-
   const board = await boardService.getById(id);
 
   if (board) {
@@ -46,7 +45,6 @@ router.route('/:id').put(async (req, res) => {
 
 router.route('/:id').delete(async (req, res) => {
   const { id } = req.params;
-
   const isRemoved = await boardService.remove(id);
 
   if (isRemoved) {

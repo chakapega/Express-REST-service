@@ -36,11 +36,15 @@ const update = async (
 
 const remove = async (boardId, taskId) => {
   tasks = tasks.filter(task => {
-    if (task.boardId !== boardId && task.id !== taskId) return task;
+    if (task.boardId !== boardId) {
+      return task;
+    } else if (task.id !== taskId) {
+      return task;
+    }
   });
 };
 
-const removeByBoardId = async boardId => {
+const removeAllByBoardId = async boardId => {
   tasks = tasks.filter(task => {
     if (task.boardId !== boardId) return task;
   });
@@ -60,6 +64,6 @@ module.exports = {
   getByBoardIdAndTaskId,
   update,
   remove,
-  removeByBoardId,
+  removeAllByBoardId,
   eraseUserIdAfterRemovingUser
 };

@@ -34,7 +34,6 @@ router.route('/').post(async (req, res) => {
 router.route('/:id').put(async (req, res) => {
   const { id } = req.params;
   const { name, login, password } = req.body;
-
   const user = await userService.update(id, { name, login, password });
 
   if (user) {
@@ -46,7 +45,6 @@ router.route('/:id').put(async (req, res) => {
 
 router.route('/:id').delete(async (req, res) => {
   const { id } = req.params;
-
   const isRemoved = await userService.remove(id);
 
   if (isRemoved) {
