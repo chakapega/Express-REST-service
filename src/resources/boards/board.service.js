@@ -6,18 +6,20 @@ const getAll = () => boardMemoryRepository.getAll();
 
 const getById = id => boardMemoryRepository.getById(id);
 
-const create = async ({ title, columns }) => {
-  const board = new Board({ title, columns });
+const create = async boardData => {
+  const board = new Board({ ...boardData });
 
   await boardMemoryRepository.create(board);
 
   return board;
 };
 
-const update = async (id, { title, columns }) => {
-  await boardMemoryRepository.update(id, { title, columns });
+const update = async boardData => {
+  const { newId } = boardData;
 
-  return boardMemoryRepository.getById(id);
+  await boardMemoryRepository.update({ ...boardData });
+
+  return boardMemoryRepository.getById(newId);
 };
 
 const remove = async id => {
