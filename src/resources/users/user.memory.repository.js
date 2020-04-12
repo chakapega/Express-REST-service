@@ -14,7 +14,7 @@ const create = async user => {
   users.push(user);
 };
 
-const update = async (id, { name, login, password }) => {
+const update = async ({ id, name, login, password }) => {
   users.forEach(user => {
     if (user.id === id) {
       user.name = name || user.name;

@@ -19,7 +19,7 @@ router.route('/:id').get(async (req, res, next) => {
     const user = await userService.getById(id);
 
     if (user) {
-      res.json(User.toResponse(user));
+      res.status(OK).json(User.toResponse(user));
     } else {
       res.status(NOT_FOUND).send('User not found');
     }
@@ -35,7 +35,7 @@ router.route('/').post(async (req, res, next) => {
     if (name && login && password) {
       const user = await userService.create({ name, login, password });
 
-      res.json(User.toResponse(user));
+      res.status(OK).json(User.toResponse(user));
     } else {
       res.status(BAD_REQUEST).send('Bad request');
     }
@@ -48,10 +48,10 @@ router.route('/:id').put(async (req, res, next) => {
   try {
     const { id } = req.params;
     const { name, login, password } = req.body;
-    const user = await userService.update(id, { name, login, password });
+    const user = await userService.update({ id, name, login, password });
 
     if (user) {
-      res.json(User.toResponse(user));
+      res.status(OK).json(User.toResponse(user));
     } else {
       res.status(BAD_REQUEST).send('Bad request');
     }
