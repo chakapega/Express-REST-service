@@ -7,6 +7,7 @@ const boardRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/task.router');
 const errorHandler = require('./middlewares/errorHandler');
 const requestsLogger = require('./middlewares/requestsLogger');
+const logger = require('./helpers/logger');
 
 const app = express();
 const swaggerDocument = YAML.load(path.join(__dirname, '../doc/api.yaml'));
@@ -32,5 +33,10 @@ app.use('/boards', boardRouter);
 app.use('/boards', taskRouter);
 
 app.use(errorHandler);
+
+process.on('uncaughtException', error => {
+  logger.error(error.message);
+  process.exitCode = 1;
+});
 
 module.exports = app;
