@@ -1,2 +1,3 @@
 node_modules
-requests.log
+error.log
+info.log
