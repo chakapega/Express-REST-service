@@ -39,4 +39,8 @@ process.on('uncaughtException', error => {
   process.exitCode = 1;
 });
 
+process.on('unhandledRejection', reason => {
+  logger.error(reason.message);
+});
+
 module.exports = app;
