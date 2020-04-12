@@ -4,18 +4,8 @@ const Task = require('./task.model');
 const getAllByBoardId = boardId =>
   taskMemoryRepository.getAllByBoardId(boardId);
 
-const create = async (
-  boardId,
-  { title, order, description, userId, columnId }
-) => {
-  const task = new Task({
-    title,
-    order,
-    description,
-    userId,
-    boardId,
-    columnId
-  });
+const create = async taskData => {
+  const task = new Task({ ...taskData });
 
   await taskMemoryRepository.create(task);
 
@@ -25,20 +15,10 @@ const create = async (
 const getByBoardIdAndTaskId = (boardId, taskId) =>
   taskMemoryRepository.getByBoardIdAndTaskId(boardId, taskId);
 
-const update = async (
-  boardId,
-  taskId,
-  { newTaskId, title, order, description, newUserId, newBoardId, newColumnId }
-) => {
-  await taskMemoryRepository.update(boardId, taskId, {
-    newTaskId,
-    title,
-    order,
-    description,
-    newUserId,
-    newBoardId,
-    newColumnId
-  });
+const update = async taskData => {
+  const { newBoardId, newTaskId } = taskData;
+
+  await taskMemoryRepository.update({ ...taskData });
 
   return await getByBoardIdAndTaskId(newBoardId, newTaskId);
 };

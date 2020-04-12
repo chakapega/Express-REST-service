@@ -1,7 +1,7 @@
 let tasks = [];
 
 const getAllByBoardId = async boardId => {
-  return tasks.map(task => {
+  return tasks.filter(task => {
     if (task.boardId === boardId) return task;
   });
 };
@@ -16,11 +16,17 @@ const getByBoardIdAndTaskId = (boardId, taskId) => {
   });
 };
 
-const update = async (
+const update = async ({
   boardId,
   taskId,
-  { newTaskId, title, order, description, newUserId, newBoardId, newColumnId }
-) => {
+  newTaskId,
+  title,
+  order,
+  description,
+  newUserId,
+  newBoardId,
+  newColumnId
+}) => {
   tasks.forEach(task => {
     if (task.boardId === boardId && task.id === taskId) {
       task.id = newTaskId || task.id;
