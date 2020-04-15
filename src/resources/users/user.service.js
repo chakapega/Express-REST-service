@@ -1,36 +1,16 @@
-const userMemoryRepository = require('./user.memory.repository');
-const taskMemoryRepository = require('../tasks/task.memory.repository');
-const User = require('./user.model');
+const userDbRepository = require('./user.db.repository');
+// const taskMemoryRepository = require('../tasks/task.memory.repository');
 
-const getAll = () => userMemoryRepository.getAll();
+const getAll = () => userDbRepository.getAll();
 
-const getById = id => userMemoryRepository.getById(id);
+const getById = id => userDbRepository.getById(id);
 
-const create = async userData => {
-  const user = new User({ ...userData });
+const create = userData => userDbRepository.create(userData);
 
-  await userMemoryRepository.create(user);
-
-  return user;
-};
-
-const update = async userData => {
-  const { id } = userData;
-
-  await userMemoryRepository.update({ ...userData });
-
-  return await userMemoryRepository.getById(id);
-};
+const update = userData => userDbRepository.update(userData);
 
 const remove = async id => {
-  let isRemoved = false;
-  const user = await userMemoryRepository.getById(id);
-
-  if (user) {
-    await userMemoryRepository.remove(id);
-    await taskMemoryRepository.eraseUserIdAfterRemovingUser(id);
-    isRemoved = true;
-  }
+  const isRemoved = await userDbRepository.remove(id);
 
   return isRemoved;
 };

@@ -48,10 +48,17 @@ router.route('/:id').put(async (req, res, next) => {
   try {
     const { id } = req.params;
     const { name, login, password } = req.body;
-    const user = await userService.update({ id, name, login, password });
 
-    if (user) {
-      res.status(OK).json(User.toResponse(user));
+    if (name && login && password) {
+      const candidate = await userService.getById(id);
+
+      if (candidate) {
+        const user = await userService.update({ id, name, login, password });
+
+        res.status(OK).json(User.toResponse(user));
+      } else {
+        res.status(NOT_FOUND).send('User not found');
+      }
     } else {
       res.status(BAD_REQUEST).send('Bad request');
     }
@@ -63,10 +70,12 @@ router.route('/:id').put(async (req, res, next) => {
 router.route('/:id').delete(async (req, res, next) => {
   try {
     const { id } = req.params;
-    const isRemoved = await userService.remove(id);
+    const candidate = await userService.getById(id);
 
-    if (isRemoved) {
-      res.status(OK).send('The user has been deleted');
+    if (candidate) {
+      const isRemoved = await userService.remove(id);
+
+      if (isRemoved) res.status(OK).send('The user has been deleted');
     } else {
       res.status(NOT_FOUND).send('User not found');
     }
