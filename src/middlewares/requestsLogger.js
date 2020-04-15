@@ -2,11 +2,9 @@ const logger = require('../helpers/logger');
 
 const requestsLogger = (req, res, next) => {
   logger.info(
-    `Url: ${req.url}, Params: ${JSON.stringify(
-      req.params
-    )}, Query parameters: ${JSON.stringify(req.query)}, Body: ${JSON.stringify(
-      req.body
-    )}`
+    `url: ${req.url}, query parameters: ${JSON.stringify(
+      req.query
+    )}, body: ${JSON.stringify(req.body)}`
   );
 
   next();

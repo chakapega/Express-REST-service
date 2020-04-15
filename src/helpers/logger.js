@@ -1,19 +1,16 @@
-const { createLogger, transports } = require('winston');
+const { createLogger, format, transports } = require('winston');
 
 const logger = createLogger({
   transports: [
     new transports.Console({
-      level: 'error'
-    }),
-    new transports.Console({
-      level: 'info'
+      format: format.combine(format.colorize(), format.cli())
     }),
     new transports.File({
-      filename: 'error.log',
+      filename: './logs/error.log',
       level: 'error'
     }),
     new transports.File({
-      filename: 'info.log',
+      filename: './logs/info.log',
       level: 'info'
     })
   ]
