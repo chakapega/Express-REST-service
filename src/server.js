@@ -8,7 +8,10 @@ mongoose
     useNewUrlParser: true,
     useUnifiedTopology: true
   })
-  .then(() => console.log('MongoDB connected'))
+  .then(() => {
+    console.log('MongoDB connected');
+    mongoose.connection.dropDatabase();
+  })
   .catch(error => console.log(error));
 
 app.listen(PORT, () =>

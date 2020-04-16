@@ -46,12 +46,18 @@ router.route('/').post(async (req, res, next) => {
 router.route('/:id').put(async (req, res, next) => {
   try {
     const { id } = req.params;
-    const { id: newId, title, columns } = req.body;
+    const { title, columns } = req.body;
 
     if (title && columns) {
-      const board = await boardService.update({ id, newId, title, columns });
+      const potentialBoard = await boardService.getById(id);
 
-      res.status(OK).json(board);
+      if (potentialBoard) {
+        const board = await boardService.update({ id, title, columns });
+
+        res.status(OK).json(board);
+      } else {
+        res.status(NOT_FOUND).send('Board not found');
+      }
     } else {
       res.status(BAD_REQUEST).send('Bad request');
     }
@@ -63,10 +69,14 @@ router.route('/:id').put(async (req, res, next) => {
 router.route('/:id').delete(async (req, res, next) => {
   try {
     const { id } = req.params;
-    const isRemoved = await boardService.remove(id);
+    const potentialBoard = await boardService.getById(id);
 
-    if (isRemoved) {
-      res.status(OK).send('The board has been deleted');
+    if (potentialBoard) {
+      const isRemoved = await boardService.remove(id);
+
+      if (isRemoved) {
+        res.status(OK).send('The board has been deleted');
+      }
     } else {
       res.status(NOT_FOUND).send('Board not found');
     }

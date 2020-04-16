@@ -1,36 +1,24 @@
-const boardMemoryRepository = require('./board.memory.repository');
-const taskMemoryRepository = require('../tasks/task.memory.repository');
-const Board = require('./board.model');
+const boardDbRepository = require('./board.db.repository');
+const Column = require('../columns/column.model');
+// const taskMemoryRepository = require('../tasks/task.memory.repository');
 
-const getAll = () => boardMemoryRepository.getAll();
+const getAll = () => boardDbRepository.getAll();
 
-const getById = id => boardMemoryRepository.getById(id);
+const getById = id => boardDbRepository.getById(id);
 
-const create = async boardData => {
-  const board = new Board({ ...boardData });
+const create = boardData => {
+  const { columns } = boardData;
+  const columnsWithId = columns.map(column => new Column(column));
 
-  await boardMemoryRepository.create(board);
+  boardData.columns = columnsWithId;
 
-  return board;
+  return boardDbRepository.create(boardData);
 };
 
-const update = async boardData => {
-  const { newId } = boardData;
-
-  await boardMemoryRepository.update({ ...boardData });
-
-  return boardMemoryRepository.getById(newId);
-};
+const update = boardData => boardDbRepository.update(boardData);
 
 const remove = async id => {
-  let isRemoved = false;
-  const board = await boardMemoryRepository.getById(id);
-
-  if (board) {
-    await boardMemoryRepository.remove(id);
-    await taskMemoryRepository.removeAllByBoardId(id);
-    isRemoved = true;
-  }
+  const isRemoved = await boardDbRepository.remove(id);
 
   return isRemoved;
 };
