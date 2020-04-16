@@ -6,7 +6,8 @@ const MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING;
 mongoose
   .connect(MONGO_CONNECTION_STRING, {
     useNewUrlParser: true,
-    useUnifiedTopology: true
+    useUnifiedTopology: true,
+    useCreateIndex: true
   })
   .then(() => {
     console.log('MongoDB connected');

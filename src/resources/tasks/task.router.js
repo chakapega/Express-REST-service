@@ -18,10 +18,10 @@ router.route('/:boardId/tasks').post(async (req, res, next) => {
     const { boardId } = req.params;
     const { title, order, description, userId, columnId } = req.body;
     const task = await taskService.create({
-      boardId,
       title,
       order,
       description,
+      boardId,
       userId,
       columnId
     });
@@ -50,28 +50,26 @@ router.route('/:boardId/tasks/:taskId').get(async (req, res, next) => {
 router.route('/:boardId/tasks/:taskId').put(async (req, res, next) => {
   try {
     const { boardId, taskId } = req.params;
-    const {
-      id: newTaskId,
-      title,
-      order,
-      description,
-      userId: newUserId,
-      boardId: newBoardId,
-      columnId: newColumnId
-    } = req.body;
-    const task = await taskService.update({
+    const { title, order, description, columnId } = req.body;
+    const potentialTask = await taskService.getByBoardIdAndTaskId(
       boardId,
-      taskId,
-      newTaskId,
-      title,
-      order,
-      description,
-      newUserId,
-      newBoardId,
-      newColumnId
-    });
+      taskId
+    );
 
-    res.status(OK).json(task);
+    if (potentialTask) {
+      const task = await taskService.update({
+        title,
+        order,
+        description,
+        boardId,
+        taskId,
+        columnId
+      });
+
+      res.status(OK).json(task);
+    } else {
+      res.status(NOT_FOUND).send('Task not found');
+    }
   } catch (error) {
     return next(error);
   }
@@ -80,10 +78,17 @@ router.route('/:boardId/tasks/:taskId').put(async (req, res, next) => {
 router.route('/:boardId/tasks/:taskId').delete(async (req, res, next) => {
   try {
     const { boardId, taskId } = req.params;
-    const isRemoved = await taskService.remove(boardId, taskId);
+    const potentialTask = await taskService.getByBoardIdAndTaskId(
+      boardId,
+      taskId
+    );
 
-    if (isRemoved) {
-      res.status(OK).send('The task has been deleted');
+    if (potentialTask) {
+      const isRemoved = await taskService.remove(boardId, taskId);
+
+      if (isRemoved) {
+        res.status(OK).send('The task has been deleted');
+      }
     } else {
       res.status(NOT_FOUND).send('Task not found');
     }

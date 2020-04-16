@@ -1,36 +1,16 @@
-const taskMemoryRepository = require('./task.memory.repository');
-const Task = require('./task.model');
+const taskDbRepository = require('./task.db.repository');
 
-const getAllByBoardId = boardId =>
-  taskMemoryRepository.getAllByBoardId(boardId);
+const getAllByBoardId = boardId => taskDbRepository.getAllByBoardId(boardId);
 
-const create = async taskData => {
-  const task = new Task({ ...taskData });
-
-  await taskMemoryRepository.create(task);
-
-  return task;
-};
+const create = taskData => taskDbRepository.create(taskData);
 
 const getByBoardIdAndTaskId = (boardId, taskId) =>
-  taskMemoryRepository.getByBoardIdAndTaskId(boardId, taskId);
+  taskDbRepository.getByBoardIdAndTaskId(boardId, taskId);
 
-const update = async taskData => {
-  const { newBoardId, newTaskId } = taskData;
-
-  await taskMemoryRepository.update({ ...taskData });
-
-  return await getByBoardIdAndTaskId(newBoardId, newTaskId);
-};
+const update = taskData => taskDbRepository.update(taskData);
 
 const remove = async (boardId, taskId) => {
-  let isRemoved = false;
-  const task = await getByBoardIdAndTaskId(boardId, taskId);
-
-  if (task) {
-    await taskMemoryRepository.remove(boardId, taskId);
-    isRemoved = true;
-  }
+  const isRemoved = await taskDbRepository.remove(boardId, taskId);
 
   return isRemoved;
 };
