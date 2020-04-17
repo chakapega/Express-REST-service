@@ -5,7 +5,8 @@ const Task = new Schema(
   {
     _id: {
       type: String,
-      default: uuid
+      default: uuid,
+      require
     },
     title: String,
     order: Number,

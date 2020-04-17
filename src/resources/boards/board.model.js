@@ -5,7 +5,8 @@ const Board = new Schema(
   {
     _id: {
       type: String,
-      default: uuid
+      default: uuid,
+      require
     },
     title: String,
     columns: {

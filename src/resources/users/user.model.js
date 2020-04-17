@@ -5,7 +5,8 @@ const User = new Schema(
   {
     _id: {
       type: String,
-      default: uuid()
+      default: uuid,
+      require
     },
     name: String,
     login: String,
