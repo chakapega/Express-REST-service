@@ -1,6 +1,6 @@
 const boardDbRepository = require('./board.db.repository');
 const Column = require('../columns/column.model');
-// const taskMemoryRepository = require('../tasks/task.memory.repository');
+const taskDbRepository = require('../tasks/task.db.repository');
 
 const getAll = () => boardDbRepository.getAll();
 
@@ -20,7 +20,9 @@ const update = boardData => boardDbRepository.update(boardData);
 const remove = async id => {
   const isRemoved = await boardDbRepository.remove(id);
 
-  return isRemoved;
+  if (isRemoved) {
+    return await taskDbRepository.removeAllByBoardId(id);
+  }
 };
 
 module.exports = { getAll, getById, create, update, remove };

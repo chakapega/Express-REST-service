@@ -1,5 +1,5 @@
 const userDbRepository = require('./user.db.repository');
-// const taskMemoryRepository = require('../tasks/task.memory.repository');
+const taskDbRepository = require('../tasks/task.db.repository');
 
 const getAll = () => userDbRepository.getAll();
 
@@ -12,7 +12,9 @@ const update = userData => userDbRepository.update(userData);
 const remove = async id => {
   const isRemoved = await userDbRepository.remove(id);
 
-  return isRemoved;
+  if (isRemoved) {
+    return await taskDbRepository.eraseUserIdAfterRemovingUser(id);
+  }
 };
 
 module.exports = { getAll, getById, create, update, remove };

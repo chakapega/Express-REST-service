@@ -18,26 +18,20 @@ const remove = async (boardId, _id) => {
   return (await Task.deleteOne({ boardId, _id })).ok;
 };
 
-// const removeAllByBoardId = async boardId => {
-//   tasks = tasks.filter(task => {
-//     if (task.boardId !== boardId) return task;
-//   });
-// };
+const removeAllByBoardId = async boardId => {
+  return (await Task.deleteMany({ boardId })).ok;
+};
 
-// const eraseUserIdAfterRemovingUser = async userId => {
-//   tasks.forEach(task => {
-//     if (task.userId === userId) {
-//       task.userId = null;
-//     }
-//   });
-// };
+const eraseUserIdAfterRemovingUser = async userId => {
+  return (await Task.updateMany({ userId }, { userId: null })).ok;
+};
 
 module.exports = {
   getAllByBoardId,
   create,
   getByBoardIdAndTaskId,
   update,
-  remove
-  // removeAllByBoardId,
-  // eraseUserIdAfterRemovingUser
+  remove,
+  removeAllByBoardId,
+  eraseUserIdAfterRemovingUser
 };
