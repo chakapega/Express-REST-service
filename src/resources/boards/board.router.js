@@ -1,13 +1,13 @@
 const router = require('express').Router();
 const boardService = require('./board.service');
 const Board = require('./board.model');
-const { OK, NOT_FOUND, BAD_REQUEST } = require('http-status-codes');
+const { OK, NOT_FOUND } = require('http-status-codes');
 
 router.route('/').get(async (req, res, next) => {
   try {
     const boards = await boardService.getAll();
 
-    res.status(OK).json(boards);
+    res.status(OK).json(boards.map(Board.toResponse));
   } catch (error) {
     return next(error);
   }
@@ -19,7 +19,7 @@ router.route('/:id').get(async (req, res, next) => {
     const board = await boardService.getById(id);
 
     if (board) {
-      res.status(OK).json(board);
+      res.status(OK).json(Board.toResponse(board));
     } else {
       res.status(NOT_FOUND).send('Board not found');
     }
@@ -43,19 +43,14 @@ router.route('/:id').put(async (req, res, next) => {
   try {
     const { id } = req.params;
     const { title, columns } = req.body;
+    const potentialBoard = await boardService.getById(id);
 
-    if (title && columns) {
-      const potentialBoard = await boardService.getById(id);
+    if (potentialBoard) {
+      const board = await boardService.update({ id, title, columns });
 
-      if (potentialBoard) {
-        const board = await boardService.update({ id, title, columns });
-
-        res.status(OK).json(board);
-      } else {
-        res.status(NOT_FOUND).send('Board not found');
-      }
+      res.status(OK).json(Board.toResponse(board));
     } else {
-      res.status(BAD_REQUEST).send('Bad request');
+      res.status(NOT_FOUND).send('Board not found');
     }
   } catch (error) {
     return next(error);

@@ -1,7 +1,7 @@
 const router = require('express').Router();
 const User = require('./user.model');
 const userService = require('./user.service');
-const { OK, NOT_FOUND, BAD_REQUEST } = require('http-status-codes');
+const { OK, NOT_FOUND } = require('http-status-codes');
 
 router.route('/').get(async (req, res, next) => {
   try {
@@ -31,14 +31,9 @@ router.route('/:id').get(async (req, res, next) => {
 router.route('/').post(async (req, res, next) => {
   try {
     const { name, login, password } = req.body;
+    const user = await userService.create({ name, login, password });
 
-    if (name && login && password) {
-      const user = await userService.create({ name, login, password });
-
-      res.status(OK).json(User.toResponse(user));
-    } else {
-      res.status(BAD_REQUEST).send('Bad request');
-    }
+    res.status(OK).json(User.toResponse(user));
   } catch (error) {
     return next(error);
   }
@@ -48,19 +43,14 @@ router.route('/:id').put(async (req, res, next) => {
   try {
     const { id } = req.params;
     const { name, login, password } = req.body;
+    const candidate = await userService.getById(id);
 
-    if (name && login && password) {
-      const candidate = await userService.getById(id);
+    if (candidate) {
+      const user = await userService.update({ id, name, login, password });
 
-      if (candidate) {
-        const user = await userService.update({ id, name, login, password });
-
-        res.status(OK).json(User.toResponse(user));
-      } else {
-        res.status(NOT_FOUND).send('User not found');
-      }
+      res.status(OK).json(User.toResponse(user));
     } else {
-      res.status(BAD_REQUEST).send('Bad request');
+      res.status(NOT_FOUND).send('User not found');
     }
   } catch (error) {
     return next(error);

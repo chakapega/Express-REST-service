@@ -8,7 +8,22 @@ router.route('/:boardId/tasks').get(async (req, res, next) => {
     const { boardId } = req.params;
     const boardTasks = await taskService.getAllByBoardId(boardId);
 
-    res.status(OK).json(boardTasks);
+    res.status(OK).json(boardTasks.map(Task.toResponse));
+  } catch (error) {
+    return next(error);
+  }
+});
+
+router.route('/:boardId/tasks/:taskId').get(async (req, res, next) => {
+  try {
+    const { boardId, taskId } = req.params;
+    const task = await taskService.getByBoardIdAndTaskId(boardId, taskId);
+
+    if (task) {
+      res.status(OK).json(Task.toResponse(task));
+    } else {
+      res.status(NOT_FOUND).send('Task not found');
+    }
   } catch (error) {
     return next(error);
   }
@@ -33,21 +48,6 @@ router.route('/:boardId/tasks').post(async (req, res, next) => {
   }
 });
 
-router.route('/:boardId/tasks/:taskId').get(async (req, res, next) => {
-  try {
-    const { boardId, taskId } = req.params;
-    const task = await taskService.getByBoardIdAndTaskId(boardId, taskId);
-
-    if (task) {
-      res.status(OK).json(task);
-    } else {
-      res.status(NOT_FOUND).send('Task not found');
-    }
-  } catch (error) {
-    return next(error);
-  }
-});
-
 router.route('/:boardId/tasks/:taskId').put(async (req, res, next) => {
   try {
     const { boardId, taskId } = req.params;
@@ -67,7 +67,7 @@ router.route('/:boardId/tasks/:taskId').put(async (req, res, next) => {
         columnId
       });
 
-      res.status(OK).json(task);
+      res.status(OK).json(Task.toResponse(task));
     } else {
       res.status(NOT_FOUND).send('Task not found');
     }

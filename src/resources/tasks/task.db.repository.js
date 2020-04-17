@@ -1,6 +1,6 @@
 const Task = require('./task.model');
 
-const getAllByBoardId = async boardId => Task.find({ boardId });
+const getAllByBoardId = boardId => Task.find({ boardId });
 
 const create = taskData => Task.create(taskData);
 
