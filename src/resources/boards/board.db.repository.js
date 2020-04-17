@@ -2,7 +2,7 @@ const Board = require('./board.model');
 
 const getAll = () => Board.find({});
 
-const getById = async id => Board.findById(id);
+const getById = id => Board.findById(id);
 
 const create = boardData => Board.create(boardData);
 

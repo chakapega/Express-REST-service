@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const boardService = require('./board.service');
+const Board = require('./board.model');
 const { OK, NOT_FOUND, BAD_REQUEST } = require('http-status-codes');
 
 router.route('/').get(async (req, res, next) => {
@@ -30,14 +31,9 @@ router.route('/:id').get(async (req, res, next) => {
 router.route('/').post(async (req, res, next) => {
   try {
     const { title, columns } = req.body;
+    const board = await boardService.create({ title, columns });
 
-    if (title && columns) {
-      const board = await boardService.create({ title, columns });
-
-      res.status(OK).json(board);
-    } else {
-      res.status(BAD_REQUEST).send('Bad request');
-    }
+    res.status(OK).json(Board.toResponse(board));
   } catch (error) {
     return next(error);
   }

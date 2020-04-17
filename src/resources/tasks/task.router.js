@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const taskService = require('./task.service');
+const Task = require('./task.model');
 const { OK, NOT_FOUND } = require('http-status-codes');
 
 router.route('/:boardId/tasks').get(async (req, res, next) => {
@@ -26,7 +27,7 @@ router.route('/:boardId/tasks').post(async (req, res, next) => {
       columnId
     });
 
-    res.status(OK).json(task);
+    res.status(OK).json(Task.toResponse(task));
   } catch (error) {
     return next(error);
   }
