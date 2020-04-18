@@ -43,9 +43,9 @@ router.route('/:id').put(async (req, res, next) => {
   try {
     const { id } = req.params;
     const { name, login, password } = req.body;
-    const candidate = await userService.getById(id);
+    const potentialUser = await userService.getById(id);
 
-    if (candidate) {
+    if (potentialUser) {
       const user = await userService.update({ id, name, login, password });
 
       res.status(OK).json(User.toResponse(user));
@@ -60,9 +60,9 @@ router.route('/:id').put(async (req, res, next) => {
 router.route('/:id').delete(async (req, res, next) => {
   try {
     const { id } = req.params;
-    const candidate = await userService.getById(id);
+    const potentialUser = await userService.getById(id);
 
-    if (candidate) {
+    if (potentialUser) {
       const isRemoved = await userService.remove(id);
 
       if (isRemoved) res.status(OK).send('The user has been deleted');
