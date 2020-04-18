@@ -1,21 +1,20 @@
-const router = require('express').Router();
+const taskRouter = require('express').Router();
+const catchError = require('../../helpers/catchError');
 const taskService = require('./task.service');
 const Task = require('./task.model');
 const { OK, NOT_FOUND } = require('http-status-codes');
 
-router.route('/:boardId/tasks').get(async (req, res, next) => {
-  try {
+taskRouter.route('/:boardId/tasks').get(
+  catchError(async (req, res) => {
     const { boardId } = req.params;
     const boardTasks = await taskService.getAllByBoardId(boardId);
 
     res.status(OK).json(boardTasks.map(Task.toResponse));
-  } catch (error) {
-    return next(error);
-  }
-});
+  })
+);
 
-router.route('/:boardId/tasks/:taskId').get(async (req, res, next) => {
-  try {
+taskRouter.route('/:boardId/tasks/:taskId').get(
+  catchError(async (req, res) => {
     const { boardId, taskId } = req.params;
     const task = await taskService.getByBoardIdAndTaskId(boardId, taskId);
 
@@ -24,13 +23,11 @@ router.route('/:boardId/tasks/:taskId').get(async (req, res, next) => {
     } else {
       res.status(NOT_FOUND).send('Task not found');
     }
-  } catch (error) {
-    return next(error);
-  }
-});
+  })
+);
 
-router.route('/:boardId/tasks').post(async (req, res, next) => {
-  try {
+taskRouter.route('/:boardId/tasks').post(
+  catchError(async (req, res) => {
     const { boardId } = req.params;
     const { title, order, description, userId, columnId } = req.body;
     const task = await taskService.create({
@@ -43,13 +40,11 @@ router.route('/:boardId/tasks').post(async (req, res, next) => {
     });
 
     res.status(OK).json(Task.toResponse(task));
-  } catch (error) {
-    return next(error);
-  }
-});
+  })
+);
 
-router.route('/:boardId/tasks/:taskId').put(async (req, res, next) => {
-  try {
+taskRouter.route('/:boardId/tasks/:taskId').put(
+  catchError(async (req, res) => {
     const { boardId, taskId } = req.params;
     const { title, order, description, columnId } = req.body;
     const potentialTask = await taskService.getByBoardIdAndTaskId(
@@ -71,13 +66,11 @@ router.route('/:boardId/tasks/:taskId').put(async (req, res, next) => {
     } else {
       res.status(NOT_FOUND).send('Task not found');
     }
-  } catch (error) {
-    return next(error);
-  }
-});
+  })
+);
 
-router.route('/:boardId/tasks/:taskId').delete(async (req, res, next) => {
-  try {
+taskRouter.route('/:boardId/tasks/:taskId').delete(
+  catchError(async (req, res) => {
     const { boardId, taskId } = req.params;
     const potentialTask = await taskService.getByBoardIdAndTaskId(
       boardId,
@@ -93,9 +86,7 @@ router.route('/:boardId/tasks/:taskId').delete(async (req, res, next) => {
     } else {
       res.status(NOT_FOUND).send('Task not found');
     }
-  } catch (error) {
-    return next(error);
-  }
-});
+  })
+);
 
-module.exports = router;
+module.exports = taskRouter;
