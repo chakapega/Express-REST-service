@@ -1,20 +1,19 @@
-const router = require('express').Router();
-const User = require('./user.model');
+const userRouter = require('express').Router();
+const catchError = require('../../helpers/catchError');
 const userService = require('./user.service');
+const User = require('./user.model');
 const { OK, NOT_FOUND } = require('http-status-codes');
 
-router.route('/').get(async (req, res, next) => {
-  try {
+userRouter.route('/').get(
+  catchError(async (req, res) => {
     const users = await userService.getAll();
 
     res.status(OK).json(users.map(User.toResponse));
-  } catch (error) {
-    return next(error);
-  }
-});
+  })
+);
 
-router.route('/:id').get(async (req, res, next) => {
-  try {
+userRouter.route('/:id').get(
+  catchError(async (req, res) => {
     const { id } = req.params;
     const user = await userService.getById(id);
 
@@ -23,24 +22,20 @@ router.route('/:id').get(async (req, res, next) => {
     } else {
       res.status(NOT_FOUND).send('User not found');
     }
-  } catch (error) {
-    return next(error);
-  }
-});
+  })
+);
 
-router.route('/').post(async (req, res, next) => {
-  try {
+userRouter.route('/').post(
+  catchError(async (req, res) => {
     const { name, login, password } = req.body;
     const user = await userService.create({ name, login, password });
 
     res.status(OK).json(User.toResponse(user));
-  } catch (error) {
-    return next(error);
-  }
-});
+  })
+);
 
-router.route('/:id').put(async (req, res, next) => {
-  try {
+userRouter.route('/:id').put(
+  catchError(async (req, res) => {
     const { id } = req.params;
     const { name, login, password } = req.body;
     const potentialUser = await userService.getById(id);
@@ -52,13 +47,11 @@ router.route('/:id').put(async (req, res, next) => {
     } else {
       res.status(NOT_FOUND).send('User not found');
     }
-  } catch (error) {
-    return next(error);
-  }
-});
+  })
+);
 
-router.route('/:id').delete(async (req, res, next) => {
-  try {
+userRouter.route('/:id').delete(
+  catchError(async (req, res) => {
     const { id } = req.params;
     const potentialUser = await userService.getById(id);
 
@@ -69,9 +62,7 @@ router.route('/:id').delete(async (req, res, next) => {
     } else {
       res.status(NOT_FOUND).send('User not found');
     }
-  } catch (error) {
-    return next(error);
-  }
-});
+  })
+);
 
-module.exports = router;
+module.exports = userRouter;
