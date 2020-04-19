@@ -6,23 +6,23 @@ const Task = new Schema(
     _id: {
       type: String,
       default: uuid,
-      require
+      required: true
     },
-    title: String,
-    order: Number,
-    description: String,
-    userId: {
-      type: Schema.Types.Mixed,
-      default: null
+    title: {
+      type: String,
+      required: true
     },
-    boardId: {
-      type: Schema.Types.Mixed,
-      default: null
+    order: {
+      type: Number,
+      required: true
     },
-    columnId: {
-      type: Schema.Types.Mixed,
-      default: null
-    }
+    description: {
+      type: String,
+      required: true
+    },
+    userId: String,
+    boardId: String,
+    columnId: String
   },
   { versionKey: false }
 );

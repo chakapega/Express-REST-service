@@ -6,12 +6,15 @@ const Board = new Schema(
     _id: {
       type: String,
       default: uuid,
-      require
+      required: true
     },
-    title: String,
+    title: {
+      type: String,
+      required: true
+    },
     columns: {
       type: Array,
-      default: []
+      required: true
     }
   },
   { versionKey: false }

@@ -6,11 +6,20 @@ const User = new Schema(
     _id: {
       type: String,
       default: uuid,
-      require
+      required: true
     },
-    name: String,
-    login: String,
-    password: String
+    name: {
+      type: String,
+      required: true
+    },
+    login: {
+      type: String,
+      required: true
+    },
+    password: {
+      type: String,
+      required: true
+    }
   },
   { versionKey: false }
 );
