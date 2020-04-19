@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const MONGO_CONNECTION_STRING = process.env.MONGO_CONNECTION_STRING;
+const { MONGO_CONNECTION_STRING } = require('./common/config');
 const logger = require('./helpers/logger');
 
 const connect = () => {
