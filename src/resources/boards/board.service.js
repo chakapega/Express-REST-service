@@ -1,5 +1,5 @@
 const boardDbRepository = require('./board.db.repository');
-const Column = require('../columns/column.model');
+const Column = require('./column.model');
 const taskDbRepository = require('../tasks/task.db.repository');
 
 const getAll = () => boardDbRepository.getAll();
