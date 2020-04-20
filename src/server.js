@@ -1,7 +1,7 @@
 const logger = require('./helpers/logger');
 const dbClient = require('./db/db.client');
 const app = require('./app');
-const { PORT } = require('./common/config');
+const { MONGO_CONNECTION_STRING, PORT } = require('./common/config');
 
 process.on('uncaughtException', error => {
   logger.error(error.message);
@@ -12,8 +12,8 @@ process.on('unhandledRejection', reason => {
   logger.error(reason.message);
 });
 
-dbClient.connect();
-
-app.listen(PORT, () =>
-  console.log(`App is running on http://localhost:${PORT}`)
-);
+dbClient.connect(MONGO_CONNECTION_STRING, () => {
+  app.listen(PORT, () =>
+    console.log(`App is running on http://localhost:${PORT}`)
+  );
+});
