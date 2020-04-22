@@ -12,10 +12,17 @@ const Board = new Schema(
       type: String,
       required: true
     },
-    columns: {
-      type: Array,
-      required: true
-    }
+    columns: [
+      {
+        _id: {
+          type: String,
+          default: uuid,
+          required: true
+        },
+        title: String,
+        order: Number
+      }
+    ]
   },
   { versionKey: false }
 );
