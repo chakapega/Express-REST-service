@@ -7,6 +7,8 @@ const getAll = () => userDbRepository.getAll();
 
 const getById = id => userDbRepository.getById(id);
 
+const getByLogin = login => userDbRepository.getByLogin(login);
+
 const create = async userData => {
   const { password } = userData;
   const hashedPassword = await bcrypt.hash(password, bcryptSaltRounds);
@@ -27,4 +29,4 @@ const remove = async id => {
   }
 };
 
-module.exports = { getAll, getById, create, update, remove };
+module.exports = { getAll, getById, getByLogin, create, update, remove };

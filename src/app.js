@@ -6,6 +6,7 @@ const requestsLogger = require('./middlewares/requestsLogger');
 const userRouter = require('./resources/users/user.router');
 const boardRouter = require('./resources/boards/board.router');
 const taskRouter = require('./resources/tasks/task.router');
+const authRouter = require('./resources/auth/auth.router');
 const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
@@ -30,6 +31,7 @@ app.use(requestsLogger);
 app.use('/users', userRouter);
 app.use('/boards', boardRouter);
 app.use('/boards', taskRouter);
+app.use('/', authRouter);
 
 app.use(errorHandler);
 

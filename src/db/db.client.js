@@ -1,15 +1,24 @@
 const mongoose = require('mongoose');
+const User = require('../resources/users/user.model');
 const logger = require('../helpers/logger');
+
+const createAdmin = async () => {
+  const admin = { name: 'Vadim', login: 'admin', password: 'admin' };
+
+  return await User.create(admin);
+};
 
 const connect = (MONGO_CONNECTION_STRING, cb) => {
   mongoose
     .connect(MONGO_CONNECTION_STRING, {
       useNewUrlParser: true,
-      useUnifiedTopology: true
+      useUnifiedTopology: true,
+      useCreateIndex: true
     })
-    .then(() => {
+    .then(async () => {
       console.log('MongoDB connected');
-      mongoose.connection.dropDatabase();
+      await mongoose.connection.dropDatabase();
+      await createAdmin();
       cb();
     })
     .catch(error => {
