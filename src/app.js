@@ -17,18 +17,12 @@ app.use(express.json());
 
 app.use(requestsLogger);
 
-app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
-
 app.use('/', (req, res, next) => {
-  if (req.originalUrl === '/') {
-    res.send('Service is running!');
-
-    return;
-  }
+  if (req.originalUrl === '/') return res.send('Service is running!');
 
   next();
 });
-
+app.use('/doc', swaggerUI.serve, swaggerUI.setup(swaggerDocument));
 app.use('/users', authorizationChecker, userRouter);
 app.use('/boards', authorizationChecker, boardRouter);
 app.use('/boards', authorizationChecker, taskRouter);
