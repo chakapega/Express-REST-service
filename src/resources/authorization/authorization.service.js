@@ -12,8 +12,6 @@ const getUserByLoginAndPassword = async userData => {
     const isMatchPassword = await bcrypt.compare(password, hashedPassword);
 
     if (isMatchPassword) return potentialUser;
-
-    return;
   }
 
   return;
@@ -21,7 +19,7 @@ const getUserByLoginAndPassword = async userData => {
 
 const signIn = userData => {
   const { _id, login } = userData;
-  const token = jwt.sign({ _id, login }, JWT_SECRET_KEY);
+  const token = jwt.sign({ _id, login }, JWT_SECRET_KEY, { expiresIn: '1h' });
 
   return token;
 };

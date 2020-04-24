@@ -1,9 +1,15 @@
 const mongoose = require('mongoose');
 const User = require('../resources/users/user.model');
 const logger = require('../helpers/logger');
+const bcrypt = require('bcrypt');
+const bcryptSaltRounds = 10;
 
 const createAdmin = async () => {
-  const admin = { name: 'Vadim', login: 'admin', password: 'admin' };
+  const admin = { name: 'Vadim', login: 'admin' };
+  const adminPassword = 'admin';
+  const hashedPassword = await bcrypt.hash(adminPassword, bcryptSaltRounds);
+
+  admin.password = hashedPassword;
 
   return await User.create(admin);
 };
