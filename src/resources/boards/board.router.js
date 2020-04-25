@@ -1,5 +1,5 @@
 const boardRouter = require('express').Router();
-const catchError = require('../../helpers/catchError');
+const catchError = require('../../common/catchError');
 const boardService = require('./board.service');
 const Board = require('./board.model');
 const { OK, NOT_FOUND } = require('http-status-codes');

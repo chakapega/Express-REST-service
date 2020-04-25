@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const User = require('../resources/users/user.model');
-const logger = require('../helpers/logger');
+const logger = require('../common/logger');
 const bcrypt = require('bcrypt');
 const bcryptSaltRounds = 10;
 
@@ -28,8 +28,8 @@ const connect = (MONGO_CONNECTION_STRING, cb) => {
       cb();
     })
     .catch(error => {
-      process.exitCode = 1;
       logger.error(`MongoDB error: ${error.message}`);
+      process.exitCode = 1;
     });
 };
 

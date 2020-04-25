@@ -1,5 +1,5 @@
 const userRouter = require('express').Router();
-const catchError = require('../../helpers/catchError');
+const catchError = require('../../common/catchError');
 const userService = require('./user.service');
 const User = require('./user.model');
 const { OK, NOT_FOUND } = require('http-status-codes');

@@ -1,4 +1,4 @@
-const logger = require('./helpers/logger');
+const logger = require('./common/logger');
 const dbClient = require('./db/db.client');
 const app = require('./app');
 const { MONGO_CONNECTION_STRING, PORT } = require('./common/config');

@@ -1,5 +1,5 @@
 const authorizationRouter = require('express').Router();
-const catchError = require('../../helpers/catchError');
+const catchError = require('../../common/catchError');
 const authorizationService = require('./authorization.service');
 const { OK, FORBIDDEN } = require('http-status-codes');
 

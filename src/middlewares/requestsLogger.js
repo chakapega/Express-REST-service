@@ -1,4 +1,4 @@
-const logger = require('../helpers/logger');
+const logger = require('../common/logger');
 
 const requestsLogger = (req, res, next) => {
   logger.info(

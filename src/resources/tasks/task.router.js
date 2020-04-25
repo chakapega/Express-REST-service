@@ -1,5 +1,5 @@
 const taskRouter = require('express').Router();
-const catchError = require('../../helpers/catchError');
+const catchError = require('../../common/catchError');
 const taskService = require('./task.service');
 const Task = require('./task.model');
 const { OK, NOT_FOUND } = require('http-status-codes');
