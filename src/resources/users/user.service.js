@@ -1,7 +1,7 @@
 const userDbRepository = require('./user.db.repository');
 const taskDbRepository = require('../tasks/task.db.repository');
 const bcrypt = require('bcrypt');
-const bcryptSaltRounds = 10;
+const { BCRYPT_SALT_ROUNDS } = require('../../common/config');
 
 const getAll = () => userDbRepository.getAll();
 
@@ -10,13 +10,10 @@ const getById = id => userDbRepository.getById(id);
 const getByLogin = login => userDbRepository.getByLogin(login);
 
 const create = async userData => {
-  const { password } = userData;
-  const hashedPassword = await bcrypt.hash(password, bcryptSaltRounds);
+  const { name, login, password } = userData;
+  const hashedPassword = await bcrypt.hash(password, +BCRYPT_SALT_ROUNDS);
 
-  // eslint-disable-next-line require-atomic-updates
-  userData.password = hashedPassword;
-
-  return userDbRepository.create(userData);
+  return userDbRepository.create({ name, login, password: hashedPassword });
 };
 
 const update = userData => userDbRepository.update(userData);
