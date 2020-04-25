@@ -3,10 +3,10 @@ const { JWT_SECRET_KEY } = require('../common/config');
 const { UNAUTHORIZED, getStatusText } = require('http-status-codes');
 
 const authorizationChecker = (req, res, next) => {
-  const authorizationHeader = req.headers.authorization;
+  const { authorization } = req.headers;
 
-  if (authorizationHeader) {
-    const token = authorizationHeader.split(' ')[1];
+  if (authorization) {
+    const token = authorization.split(' ')[1];
 
     jwt.verify(token, JWT_SECRET_KEY, err => {
       if (err) {
