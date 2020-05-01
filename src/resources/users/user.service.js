@@ -9,6 +9,20 @@ const getById = id => userDbRepository.getById(id);
 
 const getByLogin = login => userDbRepository.getByLogin(login);
 
+const getByLoginAndPassword = async userData => {
+  const { login, password } = userData;
+  const potentialUser = await getByLogin(login);
+
+  if (potentialUser) {
+    const { password: hashedPassword } = potentialUser;
+    const isMatchPassword = await bcrypt.compare(password, hashedPassword);
+
+    if (isMatchPassword) return potentialUser;
+  }
+
+  return;
+};
+
 const create = async userData => {
   const { name, login, password } = userData;
   const hashedPassword = await bcrypt.hash(password, +BCRYPT_SALT_ROUNDS);
@@ -26,4 +40,12 @@ const remove = async id => {
   }
 };
 
-module.exports = { getAll, getById, getByLogin, create, update, remove };
+module.exports = {
+  getAll,
+  getById,
+  getByLogin,
+  getByLoginAndPassword,
+  create,
+  update,
+  remove
+};
