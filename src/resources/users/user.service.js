@@ -30,7 +30,12 @@ const create = async userData => {
   return userDbRepository.create({ name, login, password: hashedPassword });
 };
 
-const update = userData => userDbRepository.update(userData);
+const update = async userData => {
+  const { id, name, login, password } = userData;
+  const hashedPassword = await bcrypt.hash(password, +BCRYPT_SALT_ROUNDS);
+
+  return userDbRepository.update({ id, name, login, password: hashedPassword });
+};
 
 const remove = async id => {
   const isRemoved = await userDbRepository.remove(id);
